@@ -1,23 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { ArrowDown, RotateCcw, ShieldCheck, Sparkles, CheckCircle2, Droplets } from 'lucide-react';
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { ArrowDown, RotateCcw, Sparkles, CheckCircle2, ShoppingBag, Eye } from 'lucide-react';
 import { FloatingLeaves3D } from '../3d/FloatingLeaves3D';
 import { ALL_PRODUCTS } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 
+// Dynamically import 3D Hero Scene with SSR disabled
+const HeroScene3D = dynamic(
+  () => import('../3d/HeroScene3D').then((mod) => mod.HeroScene3D),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[480px] sm:h-[540px] lg:h-[620px] flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-3">
+          <div className="w-8 h-8 border-2 border-[#6B742C] border-t-transparent rounded-full animate-spin" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6B742C]">
+            INITIALIZING 3D WEBGL STUDIO...
+          </span>
+        </div>
+      </div>
+    ),
+  }
+);
+
 export const HeroSection: React.FC = () => {
   const { addItem, openQuickView } = useCart();
   const heroProduct = ALL_PRODUCTS[0]; // Flagship Kachi Ghani Mustard Oil
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMouseOffset({ x: x * 15, y: y * 15 });
-  };
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -28,10 +38,9 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section
-      onMouseMove={handleMouseMove}
-      className="relative w-full min-h-[90vh] bg-gradient-to-b from-[#FAF8F5] via-[#F4F1EA] to-[#ECE8DE] flex items-center overflow-hidden pt-20 pb-16 lg:py-24"
+      className="relative w-full min-h-[92vh] bg-gradient-to-b from-[#FAF8F5] via-[#F4F1EA] to-[#ECE8DE] flex items-center overflow-hidden pt-20 pb-16 lg:py-24"
     >
-      {/* 1. Real 3D GLB Leaves WebGL Canvas with Motion & Parallax */}
+      {/* 1. Real 3D GLB Leaves WebGL Background Canvas with Flutter Physics */}
       <FloatingLeaves3D count={14} interactive={true} className="z-10" />
 
       {/* 2. Soft Ambient Radial Studio Glow */}
@@ -41,13 +50,13 @@ export const HeroSection: React.FC = () => {
       </div>
 
       {/* 3. Main Hero Architectural Grid */}
-      <div className="max-w-[1240px] w-full mx-auto px-6 sm:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-20">
+      <div className="max-w-[1280px] w-full mx-auto px-6 sm:px-10 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative z-20">
         
-        {/* Left Column (7 cols): Editorial Typography & Command Center */}
-        <div className="lg:col-span-7 flex flex-col justify-center text-left">
+        {/* Left Column (6.5 cols): Editorial Typography & Command Center */}
+        <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center text-left">
           
-          {/* Top Vedic Tag */}
-          <div className="inline-flex items-center space-x-2 text-[10.5px] font-bold tracking-[0.22em] uppercase text-[#555C23] bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full w-fit mb-5 shadow-xs border border-[#E0DED5]">
+          {/* Top Vedic Kicker */}
+          <div className="inline-flex items-center space-x-2 text-[10px] sm:text-[10.5px] font-bold tracking-[0.22em] uppercase text-[#555C23] bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full w-fit mb-5 shadow-xs border border-[#E0DED5]">
             <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
             <span>ESTD 1948 • VEDIC ESTATE PRESSERY • INDIA</span>
           </div>
@@ -58,7 +67,7 @@ export const HeroSection: React.FC = () => {
           </span>
 
           {/* Masterpiece Hero Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold leading-[1.04] tracking-[0.02em] uppercase text-[#222712]">
+          <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold leading-[1.04] tracking-[0.02em] uppercase text-[#222712]">
             ANCESTRAL PURITY,
             <span className="block font-light text-[#555C23]">
               BOTTLED IN TIME.
@@ -73,11 +82,11 @@ export const HeroSection: React.FC = () => {
           {/* Dual Action CTA Buttons */}
           <div className="mt-8 flex flex-wrap gap-4 items-center">
             <button
-              onClick={() => scrollTo('collections')}
+              onClick={() => addItem(heroProduct)}
               className="px-8 py-3.5 rounded-full bg-[#6B742C] hover:bg-[#555C23] text-white text-xs font-bold tracking-[0.14em] uppercase transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-98 flex items-center space-x-2"
             >
-              <span>EXPLORE RESERVE HARVESTS</span>
-              <ArrowDown className="w-3.5 h-3.5" />
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>ACQUIRE HARVEST RESERVE — ₹{heroProduct.price}</span>
             </button>
 
             <button
@@ -93,11 +102,11 @@ export const HeroSection: React.FC = () => {
           <div className="mt-10 pt-6 border-t border-[#E2DFD6] grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
             <div className="flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-[#6B742C] shrink-0" />
-              <span className="text-[11px] font-semibold text-[#4A4A4A]">Zero Added Heat (&lt;28°C)</span>
+              <span className="text-[11px] font-semibold text-[#4A4A4A]">Zero Heat (&lt;28°C)</span>
             </div>
             <div className="flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-[#6B742C] shrink-0" />
-              <span className="text-[11px] font-semibold text-[#4A4A4A]">Single-Origin Seeds</span>
+              <span className="text-[11px] font-semibold text-[#4A4A4A]">Native Heirloom</span>
             </div>
             <div className="flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-[#6B742C] shrink-0" />
@@ -105,55 +114,42 @@ export const HeroSection: React.FC = () => {
             </div>
             <div className="flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-[#6B742C] shrink-0" />
-              <span className="text-[11px] font-semibold text-[#4A4A4A]">FSSAI Certified Organic</span>
+              <span className="text-[11px] font-semibold text-[#4A4A4A]">FSSAI Organic</span>
             </div>
           </div>
 
         </div>
 
-        {/* Right Column (5 cols): Architectural Showcase Centerpiece */}
-        <div className="lg:col-span-5 flex justify-center items-center relative select-none">
-          <div
-            className="relative w-full max-w-[440px] aspect-[4/5] rounded-[32px] bg-gradient-to-b from-white/95 to-[#F4F1EA]/80 p-8 border border-white shadow-[0_25px_60px_-15px_rgba(79,87,32,0.18)] backdrop-blur-sm flex flex-col justify-between items-center transition-transform duration-500 ease-out"
-            style={{
-              transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0)`,
-            }}
-          >
-            {/* Top Floating Badge */}
-            <div className="w-full flex justify-between items-center z-20">
-              <span className="text-[9.5px] font-bold tracking-widest uppercase bg-[#FAF8EE] text-[#6B742C] border border-[#DDE2C1] px-3 py-1 rounded-full">
+        {/* Right Column (6 cols): 3D WebGL Bottle Showcase Centerpiece */}
+        <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center items-center relative select-none">
+          
+          <div className="relative w-full max-w-[520px] flex flex-col items-center">
+            
+            {/* Top Batch Metadata Badge */}
+            <div className="w-full flex justify-between items-center mb-1 px-4 z-20">
+              <span className="text-[9.5px] font-bold tracking-widest uppercase bg-white/90 text-[#6B742C] border border-[#DDE2C1] px-3.5 py-1 rounded-full shadow-xs">
                 ✦ HARVEST 2026 RESERVE
               </span>
-              <span className="text-[10px] font-semibold text-[#888888] tracking-wider uppercase">
-                FIRST COLD PRESS
+              <span className="text-[10px] font-semibold text-[#666666] tracking-wider uppercase bg-white/80 px-3 py-1 rounded-full border border-black/5">
+                SINGLE-ORIGIN RAJASTHAN
               </span>
             </div>
 
-            {/* Central Masterpiece Product Image */}
-            <div
-              onClick={() => openQuickView(heroProduct)}
-              className="relative w-full aspect-square max-w-[280px] my-4 cursor-pointer group flex items-center justify-center"
-            >
-              <Image
-                src={heroProduct.image}
-                alt={heroProduct.name}
-                width={280}
-                height={280}
-                priority
-                className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.16)] transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
-
-            {/* Soft Ambient Contact Shadow */}
-            <div className="w-3/4 h-5 rounded-full bg-radial from-black/25 via-black/08 to-transparent blur-md -mt-6 pointer-events-none" />
+            {/* Live Interactive 3D WebGL Glass Bottle Canvas with Drag Rotate */}
+            <HeroScene3D />
 
             {/* Bottom Card Summary & Instant Add Button */}
-            <div className="w-full bg-white/90 rounded-2xl p-4 border border-[#E8E6DF] shadow-xs flex items-center justify-between mt-2 z-20">
+            <div className="w-full bg-white/95 backdrop-blur-md rounded-2xl p-4 border border-[#E4E2DA] shadow-lg flex items-center justify-between -mt-3 z-20">
               <div className="text-left">
-                <h4 className="text-xs font-bold text-[#2C2C2C] uppercase tracking-wider truncate">
-                  {heroProduct.name}
-                </h4>
-                <div className="flex items-center space-x-2 mt-0.5">
+                <div className="flex items-center space-x-2">
+                  <span className="text-[9px] font-extrabold uppercase bg-[#FAF8EE] text-[#6B742C] px-2 py-0.5 rounded border border-[#DDE2C1]">
+                    FLAGSHIP
+                  </span>
+                  <h4 className="text-xs font-bold text-[#2C2C2C] uppercase tracking-wider truncate">
+                    {heroProduct.name}
+                  </h4>
+                </div>
+                <div className="flex items-center space-x-2 mt-1">
                   <span className="text-sm font-extrabold text-[#6B742C]">
                     ₹{heroProduct.price.toLocaleString('en-IN')}
                   </span>
@@ -162,19 +158,30 @@ export const HeroSection: React.FC = () => {
                       ₹{heroProduct.oldPrice.toLocaleString('en-IN')}
                     </span>
                   )}
-                  <span className="text-[10px] text-[#888888]">/ 500 ML</span>
+                  <span className="text-[10px] text-[#888888]">/ 500 ML • Amber Glass</span>
                 </div>
               </div>
 
-              <button
-                onClick={() => addItem(heroProduct)}
-                className="py-2 px-4 rounded-full bg-[#6B742C] hover:bg-[#555C23] text-white text-[10.5px] font-bold tracking-wider uppercase transition-colors shadow-xs"
-              >
-                + ADD
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => openQuickView(heroProduct)}
+                  className="p-2 rounded-full bg-[#FAF8EE] hover:bg-white text-[#666] hover:text-[#6B742C] border border-[#E0DED5] transition-colors"
+                  title="View Lab Analysis & Specs"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                </button>
+
+                <button
+                  onClick={() => addItem(heroProduct)}
+                  className="py-2 px-4 rounded-full bg-[#6B742C] hover:bg-[#555C23] text-white text-[10.5px] font-bold tracking-wider uppercase transition-colors shadow-xs"
+                >
+                  + ADD
+                </button>
+              </div>
             </div>
 
           </div>
+
         </div>
 
       </div>
