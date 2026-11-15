@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="goldHexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EAD179" />
+      <stop offset="50%" stop-color="#C59B27" />
+      <stop offset="100%" stop-color="#7D8735" />
+    </linearGradient>
+    <linearGradient id="innerBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FAF8EE" />
+    </linearGradient>
+    <filter id="hexShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#4F5720" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  
+  <!-- Outer Hexagon -->
+  <polygon points="80,6 150,44 150,116 80,154 10,116 10,44" 
+    fill="url(#innerBg)" stroke="url(#goldHexGrad)" stroke-width="3" filter="url(#hexShadow)" />
+    
+  <!-- Inner Hexagon Accent -->
+  <polygon points="80,14 142,48 142,112 80,146 18,112 18,48" 
+    fill="none" stroke="#6B742C" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+    
+  <!-- Heritage Botanical Sprig -->
+  <g transform="translate(80, 52) scale(0.7)" stroke="#6B742C" fill="#7D8735" stroke-width="1.2">
+    <!-- Center Sprig -->
+    <path d="M0,25 Q-15,5 -20,-15 Q-10,-5 0,15 Q10,-5 20,-15 Q15,5 0,25" />
+    <!-- Foliage Leaves -->
+    <ellipse cx="-16" cy="-6" rx="9" ry="4" transform="rotate(-30 -16 -6)" />
+    <ellipse cx="16" cy="-6" rx="9" ry="4" transform="rotate(30 16 -6)" />
+    <ellipse cx="-8" cy="8" rx="8" ry="3.5" transform="rotate(-15 -8 8)" />
+    <ellipse cx="8" cy="8" rx="8" ry="3.5" transform="rotate(15 8 8)" />
+    <!-- Golden Seed Core -->
+    <ellipse cx="0" cy="-2" rx="4.5" ry="6.5" fill="#C59B27" stroke="#4F5720" stroke-width="1" />
+  </g>
+  
+  <!-- Brand Typography -->
+  <text x="80" y="100" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-size="20" font-weight="800" 
+    letter-spacing="5" fill="#2C2C2C" text-anchor="middle">SRSTI</text>
+  <text x="80" y="114" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-size="7.5" font-weight="700" 
+    letter-spacing="3" fill="#6B742C" text-anchor="middle">ORGANIC INDIA</text>
+  <line x1="48" y1="122" x2="112" y2="122" stroke="#C59B27" stroke-width="0.8" opacity="0.7" />
+  <text x="80" y="132" font-family="'Plus Jakarta Sans', 'Montserrat', sans-serif" font-size="6" font-weight="600" 
+    letter-spacing="2" fill="#888888" text-anchor="middle">ESTD 1948</text>
+</svg>
