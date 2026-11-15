@@ -4,7 +4,6 @@ import { CartProvider } from '../context/CartContext';
 import { SmoothScrollProvider } from '../components/ui/SmoothScrollProvider';
 import { CartDrawer } from '../components/ui/CartDrawer';
 import { QuickViewModal } from '../components/ui/QuickViewModal';
-import { ParallaxLeaves } from '../components/ui/ParallaxLeaves';
 
 export const metadata: Metadata = {
   title: "SRSTI — Ancestral Wood-Pressed Cold-Pressed Oils & Organic Terroir India",
@@ -25,9 +24,6 @@ export default function RootLayout({
       <body className="antialiased bg-white text-[#2C2C2C] selection:bg-[#EEF0E0] selection:text-[#6B742C]">
         <CartProvider>
           <SmoothScrollProvider>
-            {/* Multi-depth parallax foliage pinned to left and right edges */}
-            <ParallaxLeaves />
-
             {/* Shopping Cart Drawer */}
             <CartDrawer />
 
